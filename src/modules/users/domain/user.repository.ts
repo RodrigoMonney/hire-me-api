@@ -9,3 +9,6 @@ export interface UserRepository {
   update(id: string, data: UpdateUserDto): Promise<UserEntity>;
   delete(id: string): Promise<void>;
 }
+
+// This symbol is used to identify the UserRepository in the dependency injection system
+export const USER_REPOSITORY = Symbol('USER_REPOSITORY');
