@@ -1,0 +1,3 @@
+# typecheck
+echo "[husky] npx tsc --noEmit"
+npx tsc --noEmit
