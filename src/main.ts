@@ -1,11 +1,16 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './shared/infrastructure/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const configService = app.get(ConfigService);
+
   app.setGlobalPrefix('api');
+  app.useGlobalFilters(new HttpExceptionFilter(configService));
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Hire.me API')
@@ -14,10 +19,10 @@ async function bootstrap() {
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-
   SwaggerModule.setup('api/docs', app, swaggerDocument);
 
-  await app.listen(process.env.PORT ?? 3000);
+  const port = configService.get<string>('PORT') ?? '3000';
+  await app.listen(port);
 }
 
 void bootstrap();
