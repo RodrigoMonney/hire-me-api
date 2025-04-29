@@ -13,7 +13,8 @@
 ## 📦 Requisitos para rodar o projeto
 
 - Node.js 22.15.0
-- Docker e Docker Compose
+- Docker e Docker Compose instalados e funcionando
+  - Tutorial para instalação: https://github.com/codeedu/wsl2-docker-quickstart/blob/main/README.md
 
 ## 🚀 Rodando o projeto
 
