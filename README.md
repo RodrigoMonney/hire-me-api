@@ -38,7 +38,9 @@ npm install
 docker-compose up -d
 ```
 
-### 3. Crie um arquivo .env baseado no .env.example e configure as variáveis de ambiente.
+### 3. Configure o arquivo .env
+
+> Crie um arquivo .env baseado no .env.example e configure as variáveis de ambiente.
 
 ### 4. Rode as migrations para criar as tabelas no banco de dados:
 
