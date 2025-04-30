@@ -182,6 +182,13 @@ describe('UsersService', () => {
       // Arrange
       const id = faker.string.uuid();
 
+      const user = {
+        id,
+        name: faker.person.firstName(),
+        email: faker.internet.email(),
+      } as UserEntity;
+
+      userRepository.findById.mockResolvedValue(user);
       userRepository.delete.mockResolvedValue(undefined);
       cacheService.del.mockResolvedValue(undefined);
 

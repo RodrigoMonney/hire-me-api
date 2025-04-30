@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "allowJs": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -11,8 +12,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "src/*": ["src/*"],
-      "generated/*": ["generated/*"]
+      "src/*": ["src/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
@@ -23,5 +23,6 @@
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
     "esModuleInterop": true
-  }
+  },
+  "include": ["src/**/*", "test/**/*"]
 }

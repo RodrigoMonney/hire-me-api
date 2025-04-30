@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Post,
   Put,
@@ -43,6 +44,7 @@ export class UsersController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deleta um usuário pelo ID' })
+  @HttpCode(204)
   async deleteUser(@Param('id') id: string) {
     return await this.userService.deleteUser(id);
   }
