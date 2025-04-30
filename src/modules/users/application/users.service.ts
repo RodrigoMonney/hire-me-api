@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CacheService } from 'src/shared/infrastructure/services/cache/cache.service';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { CacheService } from '../../../shared/infrastructure/services/cache/cache.service';
 import { UserEntity } from '../domain/user.entity';
 import { USER_REPOSITORY, UserRepository } from '../domain/user.repository';
 import { CreateUserDto } from '../web/dto/create-user.dto';
@@ -42,9 +42,11 @@ export class UsersService {
 
     const user = await this.userRepository.findById(id);
 
-    if (user) {
-      await this.cacheService.set(cacheKey, user);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
     }
+
+    await this.cacheService.set(cacheKey, user);
 
     return user;
   }

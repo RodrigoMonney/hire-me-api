@@ -17,11 +17,8 @@ export class CacheService {
   async get<T>(key: string): Promise<T | null> {
     try {
       const result = await this.redis.get(key);
-      console.log('CacheService.get result', result);
 
-      if (!result) {
-        return null;
-      }
+      if (!result) return null;
 
       return JSON.parse(result) as T;
     } catch (error) {
@@ -41,8 +38,6 @@ export class CacheService {
       } else {
         await this.redis.set(key, serialized);
       }
-
-      console.log('CacheService.set result', { key, value, ttl: timeToLive });
     } catch (error) {
       console.error(`[CacheService] Error setting key "${key}":`, error);
     }
@@ -51,7 +46,6 @@ export class CacheService {
   async del(key: string): Promise<void> {
     try {
       await this.redis.del(key);
-      console.log('CacheService.del result', key);
     } catch (error) {
       console.error(`[CacheService] Error deleting key "${key}":`, error);
     }
