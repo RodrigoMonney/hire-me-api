@@ -42,11 +42,27 @@ docker-compose up -d
 
 > Crie um arquivo .env baseado no .env.example e configure as variáveis de ambiente.
 
-### 4. Rode as migrations para criar as tabelas no banco de dados:
+### 4. Rodar as Migrations para Criar as Tabelas no Banco de Dados
+
+Execute o comando abaixo para aplicar as migrations e criar as tabelas no banco de dados:
 
 ```bash
 npx prisma migrate dev
 ```
+
+> ⚠️ **Erro comum:**  
+> Caso você encontre o seguinte erro:
+>
+> ```
+> P1000: Authentication failed against database server
+> ```
+>
+> Siga os passos abaixo para resolver:
+>
+> 1. Pressione `Windows + R`, digite `services.msc` e pressione Enter.
+> 2. Localize o serviço chamado **`postgresql-x64-16 - PostgreSQL Server 16`**.
+> 3. Clique com o botão direito sobre ele e selecione **Parar**.
+> 4. Após isso, tente executar o comando novamente.
 
 ### 5. Rode o script generate para gerar o Prisma Client
 
