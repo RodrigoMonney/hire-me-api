@@ -22,6 +22,12 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, swaggerDocument);
 
   const port = configService.get<string>('PORT') ?? '3000';
+  const environment = configService.get<string>('NODE_ENV');
+
+  if (environment === 'development') {
+    app.enableCors({ origin: '*' });
+  }
+
   await app.listen(port);
 }
 
