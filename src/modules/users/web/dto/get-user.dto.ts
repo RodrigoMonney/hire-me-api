@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from 'src/modules/auth/domain/enums/role.enum';
 
-export class CreateUserDto {
+export class GetUserDto {
+  @ApiProperty()
+  id: string;
+
   @ApiProperty()
   name: string;
 
@@ -9,8 +11,11 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty()
-  password: string;
+  role: string;
 
   @ApiProperty()
-  role?: Role;
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
 }

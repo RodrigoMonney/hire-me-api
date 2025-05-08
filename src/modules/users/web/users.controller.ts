@@ -4,11 +4,13 @@ import {
   Delete,
   Get,
   HttpCode,
+  NotFoundException,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PublicRoute } from 'src/modules/auth/web/decorators/public-route.decorator';
 import { UsersService } from '../application/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -26,6 +28,8 @@ export class UsersController {
 
   @Get()
   @ApiOperation({ summary: 'Lista todos os usuários' })
+  // @UseGuards(AccessTokenGuard)
+  @PublicRoute()
   async findAllUsers() {
     return await this.userService.findAllUsers();
   }
@@ -33,7 +37,11 @@ export class UsersController {
   @Get(':id')
   @ApiOperation({ summary: 'Busca um usuário pelo ID' })
   async findUserById(@Param('id') id: string) {
-    return await this.userService.findUserById(id);
+    const user = await this.userService.findUserById(id);
+
+    if (!user) throw new NotFoundException(`User with id ${id} not found`);
+
+    return user;
   }
 
   @Put(':id')

@@ -21,6 +21,10 @@ export class PrismaUserRepository implements UserRepository {
     return await this.prisma.user.findUnique({ where: { id } });
   }
 
+  async findByEmail(email: string): Promise<UserEntity | null> {
+    return await this.prisma.user.findUnique({ where: { email } });
+  }
+
   async update(id: string, data: UpdateUserDto): Promise<UserEntity> {
     return await this.prisma.user.update({ where: { id }, data });
   }

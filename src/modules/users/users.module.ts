@@ -16,5 +16,6 @@ import { UsersController } from './web/users.controller';
       useExisting: PrismaUserRepository,
     },
   ],
+  exports: [UsersService],
 })
 export class UsersModule {}

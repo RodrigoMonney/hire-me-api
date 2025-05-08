@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { NotFoundException } from '@nestjs/common';
 import { mock } from 'jest-mock-extended';
+import { Role } from 'src/modules/auth/domain/enums/role.enum';
 import { CacheService } from 'src/shared/infrastructure/services/cache/cache.service';
 import { UserEntity } from '../domain/user.entity';
 import { UserRepository } from '../domain/user.repository';
+import { CreateUserDto } from '../web/dto/create-user.dto';
 import { UsersService } from './users.service';
 
 describe('UsersService', () => {
@@ -18,21 +19,31 @@ describe('UsersService', () => {
   describe('createUser', () => {
     it('SHOULD create a user and clear cache', async () => {
       // Arrange
-      const user = {
+      const userToCreate: CreateUserDto = {
+        name: faker.person.firstName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+      };
+
+      const createdUser: UserEntity = {
         id: faker.string.uuid(),
         name: faker.person.firstName(),
         email: faker.internet.email(),
-      } as UserEntity;
+        password: 'pass123',
+        role: Role.USER,
+        createdAt: faker.date.past(),
+        updatedAt: faker.date.past(),
+      };
 
-      userRepository.create.mockResolvedValue(user);
+      userRepository.create.mockResolvedValue(createdUser);
       cacheService.del.mockResolvedValue(undefined);
 
       // Act
-      const result = await sut.createUser(user);
+      const result = await sut.createUser(userToCreate);
 
       // Assert
-      expect(result).toEqual(user);
-      expect(userRepository.create).toHaveBeenCalledWith(user);
+      expect(result).toEqual(createdUser);
+      expect(userRepository.create).toHaveBeenCalledWith(userToCreate);
       expect(cacheService.del).toHaveBeenCalledWith('users:all');
     });
   });
@@ -137,14 +148,13 @@ describe('UsersService', () => {
       cacheService.set.mockResolvedValue(undefined);
 
       // Act & Assert
-      await expect(sut.findUserById(id)).rejects.toThrow(
-        new NotFoundException(`User with id ${id} not found`),
-      );
+      const result = await sut.findUserById(id);
 
       // Assert
       expect(cacheService.get).toHaveBeenCalledWith(`users:${id}`);
       expect(userRepository.findById).toHaveBeenCalledWith(id);
       expect(cacheService.set).not.toHaveBeenCalledWith(`users:${id}`, null);
+      expect(result).toBeNull();
     });
   });
 
